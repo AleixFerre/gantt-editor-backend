@@ -8,11 +8,13 @@ datasource db {
 }
 
 model groups {
-  id    Int     @id @default(autoincrement())
-  name  String  @db.VarChar
-  color String  @db.VarChar
-  order Int
-  tasks tasks[]
+  id     Int     @id @default(autoincrement())
+  name   String  @db.VarChar
+  color  String  @db.VarChar
+  order  Int
+  board  Int
+  boards boards  @relation(fields: [board], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "groups_boards_fk")
+  tasks  tasks[]
 }
 
 model tasks {
@@ -24,4 +26,28 @@ model tasks {
   start    Int
   duration Int
   groups   groups? @relation(fields: [group], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tasks_groups_fk")
+}
+
+model boards {
+  id          Int           @id(map: "boards_pk") @default(autoincrement())
+  name        String        @db.VarChar
+  groups      groups[]
+  user_boards user_boards[]
+}
+
+model users {
+  id          Int           @id(map: "users_pk") @default(autoincrement())
+  name        String        @unique(map: "users_unique") @db.VarChar
+  password    String        @db.VarChar
+  email       String        @db.VarChar
+  user_boards user_boards[]
+}
+
+model user_boards {
+  user   Int
+  board  Int
+  groups boards @relation(fields: [board], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_boards_groups_fk")
+  users  users  @relation(fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_groups_users_fk")
+
+  @@id([user, board], map: "newtable_pk")
 }
