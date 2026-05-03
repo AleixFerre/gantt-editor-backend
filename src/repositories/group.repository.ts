@@ -12,4 +12,12 @@ export const groupRepository = {
   create(data: Prisma.groupsCreateInput): Promise<groups> {
     return prisma.groups.create({ data });
   },
+
+  async nextOrder(): Promise<number> {
+    const last = await prisma.groups.findFirst({
+      orderBy: { order: 'desc' },
+      select: { order: true },
+    });
+    return last ? last.order + 1 : 0;
+  },
 };

@@ -3,10 +3,10 @@ import { taskRepository } from '../repositories/task.repository.ts';
 export type CreateTaskInput = {
   name: string;
   color: string;
-  order: number;
   start: number;
   duration: number;
   group?: number | null;
+  order?: number;
 };
 
 export type UpdateTaskInput = Partial<{
@@ -19,10 +19,12 @@ export type UpdateTaskInput = Partial<{
 }>;
 
 export const taskService = {
-  create(input: CreateTaskInput) {
-    const { group, ...rest } = input;
+  async create(input: CreateTaskInput) {
+    const { group, order, ...rest } = input;
+    const resolvedOrder = order ?? (await taskRepository.nextOrderForGroup(group ?? null));
     return taskRepository.create({
       ...rest,
+      order: resolvedOrder,
       ...(group != null && { groups: { connect: { id: group } } }),
     });
   },
