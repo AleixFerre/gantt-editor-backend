@@ -17,5 +17,5 @@ app.use(groupRouter);
 app.use(taskRouter);
 
 app.listen(port, () => {
-  console.log(`⚡ Server listening on port ${port}`);
+  console.log(`🟢 Server listening on port ${port}`);
 });
