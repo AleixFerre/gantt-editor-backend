@@ -5,4 +5,8 @@ export const taskRepository = {
   create(data: Prisma.tasksCreateInput): Promise<tasks> {
     return prisma.tasks.create({ data });
   },
+
+  update(id: number, data: Prisma.tasksUpdateInput): Promise<tasks> {
+    return prisma.tasks.update({ where: { id }, data });
+  },
 };
