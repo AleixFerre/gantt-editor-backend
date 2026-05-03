@@ -5,6 +5,9 @@ export type CreateGroupInput = {
   order?: number;
 };
 
+export type ReorderEntry = Record<string, number>;
+export type ReorderInput = ReorderEntry[];
+
 export type UpdateGroupInput = Partial<{
   name: string;
   color: string;

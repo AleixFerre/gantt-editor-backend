@@ -7,6 +7,9 @@ export type CreateTaskInput = {
   order?: number;
 };
 
+export type ReorderEntry = Record<string, number>;
+export type ReorderInput = ReorderEntry[];
+
 export type UpdateTaskInput = Partial<{
   name: string;
   color: string;

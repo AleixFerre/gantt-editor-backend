@@ -3,6 +3,7 @@ import { boardService } from '../services/board.service.ts';
 import { groupService } from '../services/group.service.ts';
 import type {
   CreateGroupInput,
+  ReorderInput,
   UpdateGroupInput,
 } from '../services/group.service.model.ts';
 
@@ -37,5 +38,14 @@ export const groupController = {
     if (!Number.isFinite(id)) return res.status(400).json({ error: 'invalid id' });
     const updated = await groupService.update(id, req.body as UpdateGroupInput);
     return res.json(updated);
+  },
+
+  async reorder(req: Request, res: Response) {
+    const body = req.body as ReorderInput;
+    if (!Array.isArray(body)) {
+      return res.status(400).json({ error: 'expected an array' });
+    }
+    await groupService.reorder(body);
+    return res.status(204).end();
   },
 };

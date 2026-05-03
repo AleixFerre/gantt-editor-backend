@@ -18,6 +18,14 @@ export const groupRepository = {
     return prisma.groups.update({ where: { id }, data });
   },
 
+  reorder(updates: ReadonlyArray<{ id: number; order: number }>) {
+    return prisma.$transaction(
+      updates.map(({ id, order }) =>
+        prisma.groups.update({ where: { id }, data: { order } }),
+      ),
+    );
+  },
+
   async nextOrder(boardId: number): Promise<number> {
     const last = await prisma.groups.findFirst({
       where: { board: boardId },
