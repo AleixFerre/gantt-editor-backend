@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
-import {
-  groupService,
-  type CreateGroupInput,
-  type UpdateGroupInput,
-} from '../services/group.service.ts';
+import { groupService } from '../services/group.service.ts';
+import type {
+  CreateGroupInput,
+  UpdateGroupInput,
+} from '../services/group.service.model.ts';
 
 export const groupController = {
   async list(_req: Request, res: Response) {

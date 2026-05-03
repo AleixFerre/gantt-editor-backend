@@ -1,22 +1,5 @@
 import { taskRepository } from '../repositories/task.repository.ts';
-
-export type CreateTaskInput = {
-  name: string;
-  color: string;
-  start: number;
-  duration: number;
-  group?: number | null;
-  order?: number;
-};
-
-export type UpdateTaskInput = Partial<{
-  name: string;
-  color: string;
-  order: number;
-  start: number;
-  duration: number;
-  group: number | null;
-}>;
+import type { CreateTaskInput, UpdateTaskInput } from './task.service.model.ts';
 
 export const taskService = {
   async create(input: CreateTaskInput) {

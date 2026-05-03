@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
-import {
-  taskService,
-  type CreateTaskInput,
-  type UpdateTaskInput,
-} from '../services/task.service.ts';
+import { taskService } from '../services/task.service.ts';
+import type {
+  CreateTaskInput,
+  UpdateTaskInput,
+} from '../services/task.service.model.ts';
 
 export const taskController = {
   async create(req: Request, res: Response) {

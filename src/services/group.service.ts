@@ -1,16 +1,5 @@
 import { groupRepository } from '../repositories/group.repository.ts';
-
-export type CreateGroupInput = {
-  name: string;
-  color: string;
-  order?: number;
-};
-
-export type UpdateGroupInput = Partial<{
-  name: string;
-  color: string;
-  order: number;
-}>;
+import type { CreateGroupInput, UpdateGroupInput } from './group.service.model.ts';
 
 export const groupService = {
   listWithTasks() {
@@ -23,6 +12,7 @@ export const groupService = {
       name: input.name,
       color: input.color,
       order,
+      boards: { connect: { id: input.board } },
     });
   },
 
