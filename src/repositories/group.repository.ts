@@ -26,6 +26,17 @@ export const groupRepository = {
     );
   },
 
+  findById(id: number) {
+    return prisma.groups.findUnique({ where: { id } });
+  },
+
+  deleteWithTasks(id: number) {
+    return prisma.$transaction([
+      prisma.tasks.deleteMany({ where: { group: id } }),
+      prisma.groups.delete({ where: { id } }),
+    ]);
+  },
+
   async nextOrder(boardId: number): Promise<number> {
     const last = await prisma.groups.findFirst({
       where: { board: boardId },

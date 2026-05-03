@@ -1,11 +1,7 @@
 import type { Request, Response } from 'express';
 import { boardService } from '../services/board.service.ts';
+import type { CreateGroupInput, ReorderInput, UpdateGroupInput } from '../services/group.service.model.ts';
 import { groupService } from '../services/group.service.ts';
-import type {
-  CreateGroupInput,
-  ReorderInput,
-  UpdateGroupInput,
-} from '../services/group.service.model.ts';
 
 export const groupController = {
   async list(req: Request, res: Response) {
@@ -46,6 +42,18 @@ export const groupController = {
       return res.status(400).json({ error: 'expected an array' });
     }
     await groupService.reorder(body);
+    return res.status(204).end();
+  },
+
+  async remove(req: Request, res: Response) {
+    if (!req.session) return res.status(403).json({ error: 'Forbidden' });
+    const id = Number(req.params['id']);
+    if (!Number.isFinite(id)) return res.status(400).json({ error: 'invalid id' });
+    const group = await groupService.findById(id);
+    if (!group) return res.status(404).json({ error: 'Not found' });
+    const allowed = await boardService.userHasAccess(req.session.userId, group.board);
+    if (!allowed) return res.status(403).json({ error: 'Forbidden' });
+    await groupService.deleteWithTasks(id);
     return res.status(204).end();
   },
 };

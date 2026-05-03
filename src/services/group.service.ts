@@ -42,4 +42,12 @@ export const groupService = {
     if (flat.length === 0) return Promise.resolve([]);
     return groupRepository.reorder(flat);
   },
+
+  findById(id: number) {
+    return groupRepository.findById(id);
+  },
+
+  deleteWithTasks(id: number) {
+    return groupRepository.deleteWithTasks(id);
+  },
 };

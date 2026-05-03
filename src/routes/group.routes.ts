@@ -7,3 +7,4 @@ groupRouter.get('/groups', groupController.list);
 groupRouter.post('/groups', groupController.create);
 groupRouter.patch('/groups/reorder', groupController.reorder);
 groupRouter.patch('/groups/:id', groupController.update);
+groupRouter.delete('/groups/:id', groupController.remove);
