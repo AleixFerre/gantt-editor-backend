@@ -12,4 +12,12 @@ export const boardService = {
   createForUser(userId: number, name: string) {
     return boardRepository.createForUser(userId, name);
   },
+
+  update(id: number, name: string) {
+    return boardRepository.update(id, name);
+  },
+
+  deleteCascade(id: number) {
+    return boardRepository.deleteCascade(id);
+  },
 };

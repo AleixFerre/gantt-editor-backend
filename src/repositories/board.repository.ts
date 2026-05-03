@@ -23,4 +23,17 @@ export const boardRepository = {
       },
     });
   },
+
+  update(id: number, name: string) {
+    return prisma.boards.update({ where: { id }, data: { name } });
+  },
+
+  deleteCascade(id: number) {
+    return prisma.$transaction([
+      prisma.tasks.deleteMany({ where: { groups: { board: id } } }),
+      prisma.groups.deleteMany({ where: { board: id } }),
+      prisma.user_boards.deleteMany({ where: { board: id } }),
+      prisma.boards.delete({ where: { id } }),
+    ]);
+  },
 };
