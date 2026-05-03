@@ -1,11 +1,12 @@
 import express from 'express';
-const app = express();
-const port = 3000;
+import { infoRouter } from './src/routes/info.routes.ts';
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+const app = express();
+const port = Number(process.env.PORT ?? 3000);
+
+app.use(express.json());
+app.use(infoRouter);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`⚡ Server listening on port ${port}`);
 });
