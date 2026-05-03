@@ -2,12 +2,12 @@
   "name": "gantt-backend",
   "module": "index.ts",
   "type": "module",
+  "main": "index.js",
   "private": true,
   "scripts": {
     "dev": "bun --hot index.ts",
-    "start": "bun index.ts",
-    "build": "bun build index.ts --outdir dist --target node",
-    "run-build": "bun run dist/index.js",
+    "start": "bun run src/index.ts",
+    "build": "bun run tsc",
     "prisma": "prisma db pull && prisma generate"
   },
   "devDependencies": {
