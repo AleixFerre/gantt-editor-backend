@@ -9,7 +9,6 @@ const port = Number(process.env.PORT ?? 3000);
 app.use(
   cors({
     origin: process.env.ALLOWED_ORIGINS?.split(','),
-    credentials: true,
   }),
 );
 app.use(express.json());
