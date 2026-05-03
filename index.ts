@@ -6,11 +6,16 @@ import { taskRouter } from './src/routes/task.routes.ts';
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGINS?.split(','),
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(groupRouter);
 app.use(taskRouter);
 
 app.listen(port, () => {
-  console.log(`🟢 Server listening on port ${port}`);
+  console.log(`⚡ Server listening on port ${port}`);
 });
