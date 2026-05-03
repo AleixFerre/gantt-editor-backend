@@ -1,4 +1,6 @@
 import type { Request, Response } from 'express';
+import { realtimeBus } from '../realtime/bus.ts';
+import { clientIdOf } from '../realtime/util.ts';
 import { boardService } from '../services/board.service.ts';
 
 export const boardController = {
@@ -15,7 +17,12 @@ export const boardController = {
       return res.status(400).json({ error: 'name is required' });
     }
     const board = await boardService.createForUser(req.session.userId, name.trim());
-    return res.status(201).json(board);
+    res.status(201).json(board);
+    realtimeBus.publishUserBoards(req.session.userId, {
+      type: 'board.created',
+      clientId: clientIdOf(req),
+      board: { id: board.id, name: board.name },
+    });
   },
 
   async update(req: Request, res: Response) {
@@ -29,7 +36,15 @@ export const boardController = {
       return res.status(400).json({ error: 'name is required' });
     }
     const updated = await boardService.update(id, name.trim());
-    return res.json(updated);
+    res.json(updated);
+    const userIds = await boardService.findUserIds(id);
+    const clientId = clientIdOf(req);
+    realtimeBus.publishUserBoardsMany(userIds, {
+      type: 'board.updated',
+      clientId,
+      id,
+      name: updated.name,
+    });
   },
 
   async remove(req: Request, res: Response) {
@@ -38,7 +53,13 @@ export const boardController = {
     if (!Number.isFinite(id)) return res.status(400).json({ error: 'invalid id' });
     const allowed = await boardService.userHasAccess(req.session.userId, id);
     if (!allowed) return res.status(403).json({ error: 'Forbidden' });
+    const userIds = await boardService.findUserIds(id);
     await boardService.deleteCascade(id);
-    return res.status(204).end();
+    res.status(204).end();
+    realtimeBus.publishUserBoardsMany(userIds, {
+      type: 'board.deleted',
+      clientId: clientIdOf(req),
+      id,
+    });
   },
 };

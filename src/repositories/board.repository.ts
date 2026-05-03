@@ -28,6 +28,14 @@ export const boardRepository = {
     return prisma.boards.update({ where: { id }, data: { name } });
   },
 
+  async findUserIds(boardId: number): Promise<number[]> {
+    const rows = await prisma.user_boards.findMany({
+      where: { board: boardId },
+      select: { user: true },
+    });
+    return rows.map((r) => r.user);
+  },
+
   deleteCascade(id: number) {
     return prisma.$transaction([
       prisma.tasks.deleteMany({ where: { groups: { board: id } } }),

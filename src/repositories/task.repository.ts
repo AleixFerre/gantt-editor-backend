@@ -10,6 +10,14 @@ export const taskRepository = {
     return prisma.tasks.update({ where: { id }, data });
   },
 
+  findById(id: number) {
+    return prisma.tasks.findUnique({ where: { id } });
+  },
+
+  findByGroup(groupId: number): Promise<tasks[]> {
+    return prisma.tasks.findMany({ where: { group: groupId } });
+  },
+
   reorder(updates: ReadonlyArray<{ id: number; order: number }>) {
     return prisma.$transaction(
       updates.map(({ id, order }) =>

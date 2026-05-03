@@ -9,6 +9,10 @@ export const boardService = {
     return boardRepository.userHasAccess(userId, boardId);
   },
 
+  findUserIds(boardId: number) {
+    return boardRepository.findUserIds(boardId);
+  },
+
   createForUser(userId: number, name: string) {
     return boardRepository.createForUser(userId, name);
   },

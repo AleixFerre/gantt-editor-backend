@@ -35,6 +35,14 @@ export const taskService = {
     return taskRepository.reorder(flat);
   },
 
+  findById(id: number) {
+    return taskRepository.findById(id);
+  },
+
+  listByGroup(groupId: number) {
+    return taskRepository.findByGroup(groupId);
+  },
+
   update(id: number, input: UpdateTaskInput) {
     const { group, ...rest } = input;
     return taskRepository.update(id, {
