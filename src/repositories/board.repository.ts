@@ -14,4 +14,13 @@ export const boardRepository = {
     });
     return row !== null;
   },
+
+  createForUser(userId: number, name: string) {
+    return prisma.boards.create({
+      data: {
+        name,
+        user_boards: { create: { users: { connect: { id: userId } } } },
+      },
+    });
+  },
 };
