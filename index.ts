@@ -6,11 +6,6 @@ import { taskRouter } from './src/routes/task.routes.ts';
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
 
-const allowedOrigins = (process.env.CORS_ORIGINS ?? '')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-
 app.use(
   cors({
     origin: process.env.ALLOWED_ORIGINS?.split(','),
