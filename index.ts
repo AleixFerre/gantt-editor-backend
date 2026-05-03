@@ -4,6 +4,7 @@ import express from 'express';
 import morgan from 'morgan';
 import { authMiddleware } from './src/middleware/auth.middleware.ts';
 import { authRouter } from './src/routes/auth.routes.ts';
+import { boardRouter } from './src/routes/board.routes.ts';
 import { groupRouter } from './src/routes/group.routes.ts';
 import { taskRouter } from './src/routes/task.routes.ts';
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use(authRouter);
 app.use(authMiddleware);
+app.use(boardRouter);
 app.use(groupRouter);
 app.use(taskRouter);
 

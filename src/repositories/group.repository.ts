@@ -2,8 +2,9 @@ import type { Prisma, groups } from '@prisma/client';
 import { prisma } from '../lib/prisma.ts';
 
 export const groupRepository = {
-  findAllWithTasks() {
+  findAllWithTasks(boardId: number) {
     return prisma.groups.findMany({
+      where: { board: boardId },
       orderBy: { order: 'asc' },
       include: { tasks: { orderBy: { order: 'asc' } } },
     });
@@ -17,8 +18,9 @@ export const groupRepository = {
     return prisma.groups.update({ where: { id }, data });
   },
 
-  async nextOrder(): Promise<number> {
+  async nextOrder(boardId: number): Promise<number> {
     const last = await prisma.groups.findFirst({
+      where: { board: boardId },
       orderBy: { order: 'desc' },
       select: { order: true },
     });
