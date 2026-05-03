@@ -8,5 +8,18 @@ datasource db {
 }
 
 model groups {
-  id Int @id @default(autoincrement())
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar
+  color String  @db.VarChar
+  order Int
+  tasks tasks[]
+}
+
+model tasks {
+  id     Int     @id @default(autoincrement())
+  name   String  @db.VarChar
+  color  String  @db.VarChar
+  order  Int
+  group  Int?
+  groups groups? @relation(fields: [group], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tasks_groups_fk")
 }
