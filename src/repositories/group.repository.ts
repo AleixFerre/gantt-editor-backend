@@ -13,6 +13,10 @@ export const groupRepository = {
     return prisma.groups.create({ data });
   },
 
+  update(id: number, data: Prisma.groupsUpdateInput): Promise<groups> {
+    return prisma.groups.update({ where: { id }, data });
+  },
+
   async nextOrder(): Promise<number> {
     const last = await prisma.groups.findFirst({
       orderBy: { order: 'desc' },
